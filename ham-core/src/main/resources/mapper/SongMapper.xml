@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tedu.dao.SongMapper">
+  <resultMap id="BaseResultMap" type="com.tedu.model.Song">
+    <id column="SID" jdbcType="INTEGER" property="sid" />
+    <result column="TID" jdbcType="INTEGER" property="tid" />
+    <result column="SRID" jdbcType="INTEGER" property="srid" />
+    <result column="AID" jdbcType="INTEGER" property="aid" />
+    <result column="SNAME" jdbcType="VARCHAR" property="sname" />
+    <result column="PIC" jdbcType="VARCHAR" property="pic" />
+    <result column="MP3" jdbcType="VARCHAR" property="mp3" />
+    <result column="IS_HOT" jdbcType="INTEGER" property="isHot" />
+    <result column="IS_NEW" jdbcType="INTEGER" property="isNew" />
+    <result column="PTIMES" jdbcType="INTEGER" property="ptimes" />
+    <result column="AUDIT_STATUS" jdbcType="INTEGER" property="auditStatus" />
+    <result column="SHOW_STATUS" jdbcType="INTEGER" property="showStatus" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.tedu.model.Song">
+    <result column="LRC" jdbcType="LONGVARCHAR" property="lrc" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="BaseResultMapRM" type="com.tedu.model.Song">
+    <association property="mtype" javaType="com.tedu.model.Mtype" resultMap="com.tedu.dao.MtypeMapper.BaseResultMap"></association>
+    <association property="songer" javaType="com.tedu.model.Songer" resultMap="com.tedu.dao.SongerMapper.BaseResultMap"></association>
+    <association property="album" javaType="com.tedu.model.Album" resultMap="com.tedu.dao.AlbumMapper.BaseResultMap"></association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    SID, TID, SRID, AID, SNAME, PIC, MP3, IS_HOT, IS_NEW, PTIMES, AUDIT_STATUS, SHOW_STATUS
+  </sql>
+  <sql id="Blob_Column_List">
+    LRC
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from song
+    where SID = #{sid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from song
+    where SID = #{sid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tedu.model.Song">
+    insert into song (SID, TID, SRID,
+                      AID, SNAME, PIC, MP3,
+                      IS_HOT, IS_NEW, PTIMES,
+                      AUDIT_STATUS, SHOW_STATUS, LRC
+    )
+    values (#{sid,jdbcType=INTEGER}, #{tid,jdbcType=INTEGER}, #{srid,jdbcType=INTEGER},
+            #{aid,jdbcType=INTEGER}, #{sname,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}, #{mp3,jdbcType=VARCHAR},
+            #{isHot,jdbcType=INTEGER}, #{isNew,jdbcType=INTEGER}, #{ptimes,jdbcType=INTEGER},
+            #{auditStatus,jdbcType=INTEGER}, #{showStatus,jdbcType=INTEGER}, #{lrc,jdbcType=LONGVARCHAR}
+           )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tedu.model.Song">
+    insert into song
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        SID,
+      </if>
+      <if test="tid != null">
+        TID,
+      </if>
+      <if test="srid != null">
+        SRID,
+      </if>
+      <if test="aid != null">
+        AID,
+      </if>
+      <if test="sname != null">
+        SNAME,
+      </if>
+      <if test="pic != null">
+        PIC,
+      </if>
+      <if test="mp3 != null">
+        MP3,
+      </if>
+      <if test="isHot != null">
+        IS_HOT,
+      </if>
+      <if test="isNew != null">
+        IS_NEW,
+      </if>
+      <if test="ptimes != null">
+        PTIMES,
+      </if>
+      <if test="auditStatus != null">
+        AUDIT_STATUS,
+      </if>
+      <if test="showStatus != null">
+        SHOW_STATUS,
+      </if>
+      <if test="lrc != null">
+        LRC,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="srid != null">
+        #{srid,jdbcType=INTEGER},
+      </if>
+      <if test="aid != null">
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="sname != null">
+        #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="pic != null">
+        #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="mp3 != null">
+        #{mp3,jdbcType=VARCHAR},
+      </if>
+      <if test="isHot != null">
+        #{isHot,jdbcType=INTEGER},
+      </if>
+      <if test="isNew != null">
+        #{isNew,jdbcType=INTEGER},
+      </if>
+      <if test="ptimes != null">
+        #{ptimes,jdbcType=INTEGER},
+      </if>
+      <if test="auditStatus != null">
+        #{auditStatus,jdbcType=INTEGER},
+      </if>
+      <if test="showStatus != null">
+        #{showStatus,jdbcType=INTEGER},
+      </if>
+      <if test="lrc != null">
+        #{lrc,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tedu.model.Song">
+    update song
+    <set>
+      <if test="tid != null">
+        TID = #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="srid != null">
+        SRID = #{srid,jdbcType=INTEGER},
+      </if>
+      <if test="aid != null">
+        AID = #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="sname != null">
+        SNAME = #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="pic != null">
+        PIC = #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="mp3 != null">
+        MP3 = #{mp3,jdbcType=VARCHAR},
+      </if>
+      <if test="isHot != null">
+        IS_HOT = #{isHot,jdbcType=INTEGER},
+      </if>
+      <if test="isNew != null">
+        IS_NEW = #{isNew,jdbcType=INTEGER},
+      </if>
+      <if test="ptimes != null">
+        PTIMES = #{ptimes,jdbcType=INTEGER},
+      </if>
+      <if test="auditStatus != null">
+        AUDIT_STATUS = #{auditStatus,jdbcType=INTEGER},
+      </if>
+      <if test="showStatus != null">
+        SHOW_STATUS = #{showStatus,jdbcType=INTEGER},
+      </if>
+      <if test="lrc != null">
+        LRC = #{lrc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where SID = #{sid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.tedu.model.Song">
+    update song
+    set TID = #{tid,jdbcType=INTEGER},
+        SRID = #{srid,jdbcType=INTEGER},
+        AID = #{aid,jdbcType=INTEGER},
+        SNAME = #{sname,jdbcType=VARCHAR},
+        PIC = #{pic,jdbcType=VARCHAR},
+        MP3 = #{mp3,jdbcType=VARCHAR},
+        IS_HOT = #{isHot,jdbcType=INTEGER},
+        IS_NEW = #{isNew,jdbcType=INTEGER},
+        PTIMES = #{ptimes,jdbcType=INTEGER},
+        AUDIT_STATUS = #{auditStatus,jdbcType=INTEGER},
+        SHOW_STATUS = #{showStatus,jdbcType=INTEGER},
+        LRC = #{lrc,jdbcType=LONGVARCHAR}
+    where SID = #{sid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tedu.model.Song">
+    update song
+    set TID = #{tid,jdbcType=INTEGER},
+        SRID = #{srid,jdbcType=INTEGER},
+        AID = #{aid,jdbcType=INTEGER},
+        SNAME = #{sname,jdbcType=VARCHAR},
+        PIC = #{pic,jdbcType=VARCHAR},
+        MP3 = #{mp3,jdbcType=VARCHAR},
+        IS_HOT = #{isHot,jdbcType=INTEGER},
+        IS_NEW = #{isNew,jdbcType=INTEGER},
+        PTIMES = #{ptimes,jdbcType=INTEGER},
+        AUDIT_STATUS = #{auditStatus,jdbcType=INTEGER},
+        SHOW_STATUS = #{showStatus,jdbcType=INTEGER}
+    where SID = #{sid,jdbcType=INTEGER}
+  </update>
+
+  <!--SELECT * FROM song s
+LEFT JOIN mtype m ON s.tid=m.TID
+LEFT JOIN songer sr ON s.SRID=sr.SRID
+LEFT JOIN album a ON s.aid=a.aid
+WHERE s.sname LIKE '%爱%' AND
+sr.SRNAME LIKE '%张%' AND
+a.ANAME LIKE '%男人%' AND
+m.tid=1;-->
+  <sql id="page">
+    limit #{startNum}, #{pageSize}
+  </sql>
+
+  <select id="selectByCondition" parameterType="com.tedu.query.SongerQuery" resultMap="BaseResultMapRM">
+    select * from song s
+    left join mtype m on s.tid=m.tid
+    left join songer sr on s.SRID=sr.SRID
+    left join album a on s.aid=a.aid
+    <where>
+      <if test="sname !=null and sname !=''">
+        s.sname like '%${sname}%'
+      </if>
+      <if test="srname !=null and srname !=''">
+        sr.srname like '%${srname}%'
+      </if>
+      <if test="aname !=null and aname !=''">
+        a.aname like '%${aname}%'
+      </if>
+      <if test="tid !=null">
+        s.tid = #{tid}
+      </if>
+      <if test="isHot !=null and isHot !=''">
+        s.is_hot = #{isHot}
+      </if>
+      <if test="isNew !=null and isNew !=''">
+        and s.is_new = #{isNew}
+      </if>
+
+    </where>
+    <include refid="page" />
+  </select>
+
+  <select id="selectByConditionCount" parameterType="com.tedu.query.SongQuery" resultType="java.lang.Integer">
+    select count(*)
+    from song s
+    left join mtype m on s.tid=m.tid
+    left join songer sr on s.SRID=sr.SRID
+    left join album a on s.aid=a.aid
+    <where>
+      <if test="sname !=null and sname !=''">
+        s.sname like '%${sname}%'
+      </if>
+      <if test="srname !=null and srname !=''">
+        sr.srname like '%${srname}%'
+      </if>
+      <if test="aname !=null and aname !=''">
+        a.aname like '%${aname}%'
+      </if>
+      <if test="tid !=null">
+        s.tid = #{tid}
+      </if>
+      <if test="isHot !=null and isHot !=''">
+        s.is_hot = #{isHot}
+      </if>
+      <if test="isNew !=null and isNew !=''">
+        and s.is_new = #{isNew}
+      </if>
+    </where>
+  </select>
+  <select id="selectSongBySids" parameterType="list" resultMap="BaseResultMapRM">
+    select * from song s
+    left join mtype m on s.tid=m.tid
+    left join songer sr on s.SRID=sr.SRID
+    left join album a on s.aid=a.aid
+    <where>
+      s.sid in
+      <if test="list != null">
+        <foreach collection="list" open="(" close=")" separator="," item="sid">
+          #{sid}
+        </foreach>
+      </if>
+      order by field (s.sid,
+      <foreach collection="list" separator="," item="sid">
+        #{sid}
+      </foreach>
+      )
+    </where>
+  </select>
+
+</mapper>

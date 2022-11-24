@@ -1,0 +1,5 @@
+com\tedu\controller\SongController.class
+com\tedu\controller\AlbumController.class
+com\tedu\controller\MtypeController.class
+com\tedu\controller\UploadFileController.class
+com\tedu\controller\SongerController.class
